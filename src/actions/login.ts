@@ -6,8 +6,8 @@ import { LoginSchema } from "@/schemas";
 import axios from "axios";
 
 export const Login = async (values: z.infer<typeof LoginSchema>) => {
-  //   console.log("name: " + values.name);
-  //   console.log("password: " + values.password);
+  console.log("name: " + values.name);
+  console.log("password: " + values.password);
   //  Simulate server-side validation and authentication logic here
   const validatedFields = LoginSchema.safeParse(values);
   //   console.log("Validated fields: " + validatedFields);
