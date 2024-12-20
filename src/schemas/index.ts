@@ -81,3 +81,15 @@ export const SettingsSchema = z
       path: ["password"],
     }
   );
+
+export const computerIssueSchema = z.object({
+  description: z.string().min(1, {
+    message: "Description is required",
+  }),
+  solutions: z
+    .array(z.string().min(1, "Solution cannot be empty"))
+    .min(1, { message: "Solutions are required" }),
+  typeId: z.string().min(1, {
+    message: "Type Id is required",
+  }),
+});
