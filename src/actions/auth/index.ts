@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 
 import { LoginSchema } from "@/schemas";
 
-export const Login = async (values: z.infer<typeof LoginSchema>) => {
+const Login = async (values: z.infer<typeof LoginSchema>) => {
   //   console.log("name: " + values.name);
   //   console.log("password: " + values.password);
   //  Simulate server-side validation and authentication logic here
@@ -63,6 +63,7 @@ export const Login = async (values: z.infer<typeof LoginSchema>) => {
       httpOnly: true,
       path: "/",
     });
+
     backEndCookies.set({
       name: `${refreshTokenBackName}`,
       value: `${refreshTokenBackValue}`,
@@ -76,3 +77,23 @@ export const Login = async (values: z.infer<typeof LoginSchema>) => {
     return { error: "test" };
   }
 };
+
+const Logout = async () => {
+  const authCookies = await cookies();
+
+  const accessTokenBack = authCookies.get(
+    `${process.env.ACCESS_TOKEN_COOKIE}`
+  )?.name;
+  const refreshTokenBack = authCookies.get(
+    `${process.env.REFRESH_TOKEN_COOKIE}`
+  )?.name;
+
+  const removeAccess = authCookies.delete(accessTokenBack as string);
+  const removeRefresh = authCookies.delete(refreshTokenBack as string);
+
+  // console.log("accessTokenBackName", accessTokenBack);
+  // console.log("refreshTokenBackName", refreshTokenBack);
+  return { data: "Logged Out Successfully" };
+};
+
+export { Login, Logout };

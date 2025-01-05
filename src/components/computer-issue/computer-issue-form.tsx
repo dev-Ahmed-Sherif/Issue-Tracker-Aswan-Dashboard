@@ -29,6 +29,7 @@ import { useToast } from "@/hooks/use-toast";
 import useToggleState from "@/hooks/use-toggle-state";
 
 import { computerIssueSchema } from "@/schemas";
+import { addComputerIssue } from "@/actions/computerIssueService";
 
 type ComputerIssueFormProps = {
   initialData: any | null;
@@ -50,15 +51,15 @@ const ComputerIssueForm = ({ initialData }: ComputerIssueFormProps) => {
     initialData?.solutions
   );
 
-  const title = initialData ? "Edit Size" : "Create Size";
-  const description = initialData ? "Edit a Size" : "Add New Size";
-  const toastMessage = initialData ? "Size Updated" : "Create Size";
-  const action = initialData ? "Save changes" : "Create Size";
+  const title = initialData ? "تعديل مشكلة" : "إضافة مشكلة";
+  const description = initialData ? "تعديل" : "إضافة مشكلة جديدة";
+  const toastMessage = initialData ? "تعديل" : "إضافة";
+  const action = initialData ? "تعديل" : "إضافة";
 
-  const schema = z.object({
-    strings: z.array(z.string().min(1, "String cannot be empty")),
-    singleString: z.string().min(1, "This field is required"),
-  });
+  // const schema = z.object({
+  //   singleString: z.string().min(1, "This field is required"),
+  //   solutions: z.array(z.string().min(1, "Solution cannot be empty")),
+  // });
 
   // const { control } = useForm({});
   // const form = useForm<ComputerIssueFormValues>({
@@ -74,50 +75,71 @@ const ComputerIssueForm = ({ initialData }: ComputerIssueFormProps) => {
   //   name: "solutions",
   // });
 
-  const { control, handleSubmit } = useForm({
-    resolver: zodResolver(schema),
-    defaultValues: { strings: [""], singleString: "" },
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ComputerIssueFormValues>({
+    resolver: zodResolver(computerIssueSchema),
+    defaultValues: {
+      solutions: [""],
+      description: "",
+      typeId: "",
+    },
   });
+
+  // console.log(errors);
+  // const { fields, append, remove } = useFieldArray({
+  //   control,
+  //   name: "strings",
+  // });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "strings",
+    name: "solutions",
   });
 
-  // console.log(form);
+  // console.log(fields);
 
-  // const onSubmit = async (data: ComputerIssueFormValues) => {
-  //   console.log(data);
-  //     try {
-  //       toggleLoading();
-  //       if (initialData) {
-  //         await axios.patch(
-  //           `/api/${params.storeId}/sizes/${params.sizeId}`,
-  //           data
-  //         );
-  //       } else {
-  //         await axios.post(`/api/${params.storeId}/sizes`, data);
-  //       }
-  //       router.refresh();
-  //       setTimeout(() => {
-  //         router.push(`/${params.storeId}/sizes`);
-  //       }, 1000);
-  //       toast({
-  //         description: `🎉 ${toastMessage}`,
-  //       });
-  //     } catch (err) {
-  //       toast({
-  //         variant: "destructive",
-  //         description: "Something went wrong",
-  //       });
-  //     } finally {
-  //       toggleLoading();
-  //     }
-  // };
-
-  const onSubmit = (data) => {
+  const onSubmit = async (data: ComputerIssueFormValues) => {
     console.log(data);
+    addComputerIssue(data)
+      .then(() => {
+        toast({
+          description: `��� ${toastMessage}`,
+        });
+      })
+      .catch(() => {});
+    // try {
+    //   toggleLoading();
+    //   if (initialData) {
+    //     await axios.patch(
+    //       `/api/${params.storeId}/sizes/${params.sizeId}`,
+    //       data
+    //     );
+    //   } else {
+    //     await axios.post(`/api/${params.storeId}/sizes`, data);
+    //   }
+    //   router.refresh();
+    //   setTimeout(() => {
+    //     router.push(`/${params.storeId}/sizes`);
+    //   }, 1000);
+    //   toast({
+    //     description: `🎉 ${toastMessage}`,
+    //   });
+    // } catch (err) {
+    //   toast({
+    //     variant: "destructive",
+    //     description: "Something went wrong",
+    //   });
+    // } finally {
+    //   toggleLoading();
+    // }
   };
+
+  // const onSubmit = (data) => {
+  //   console.log(data);
+  // };
 
   const onDelete = async () => {
     try {
@@ -167,39 +189,58 @@ const ComputerIssueForm = ({ initialData }: ComputerIssueFormProps) => {
       </div>
       <Separator />
       <form onSubmit={handleSubmit(onSubmit)}>
-        {" "}
         <div className="flex items-center space-x-2">
-          {" "}
-          <label>Strings:</label>{" "}
-        </div>{" "}
-        {fields.map((field, index) => (
-          <div key={field.id} className="flex items-center space-x-2">
-            {" "}
-            <Controller
-              name={`strings.${index}`}
-              control={control}
-              render={({ field }) => <Input {...field} />}
-            />{" "}
-            <Button type="button" onClick={() => remove(index)}>
-              Remove
-            </Button>{" "}
-          </div>
-        ))}{" "}
-        <Button type="button" onClick={() => append("")}>
-          Add String
-        </Button>{" "}
-        <div className="flex items-center space-x-2 mt-4">
-          {" "}
-          <label>Single String:</label>{" "}
+          <label>الحلول :</label>
+        </div>
+        <div className="flex flex-col gap-4">
+          {fields.map((field, index) => (
+            <div key={field.id} className="flex items-center gap-4 space-x-2">
+              <Controller
+                name={`solutions.${index}`}
+                control={control}
+                render={({ field }) => <Input {...field} />}
+              />
+              <Button type="button" onClick={() => remove(index)}>
+                حذف
+              </Button>
+            </div>
+          ))}
+        </div>
+        {errors.solutions && errors.solutions[0]?.message && (
+          <p className="text-red-500">{errors.solutions[0]?.message}</p>
+        )}
+        {errors.solutions?.root?.message && (
+          <p className="text-red-500">{errors.solutions?.root?.message}</p>
+        )}
+        <Button className="mt-4" type="button" onClick={() => append("")}>
+          أضف حل مشكلة
+        </Button>
+        <div className="flex flex-col space-x-2 mt-4">
+          <label>الوصف :</label>
           <Controller
-            name="singleString"
+            name="description"
             control={control}
             render={({ field }) => <Input {...field} />}
-          />{" "}
-        </div>{" "}
+          />
+        </div>
+        {errors.description && (
+          <p className="text-red-500">{errors.description.message}</p>
+        )}
+        <div className="hidden">
+          <label>Single String:</label>
+          <Controller
+            name="typeId"
+            control={control}
+            render={({ field }) => <Input {...field} />}
+          />
+          {errors.typeId && (
+            <p className="text-red-500">{errors.typeId.message}</p>
+          )}
+        </div>
         <Button type="submit" className="mt-4">
-          Submit
-        </Button>{" "}
+          {loading && <Loader2 className="h-6 w-6" />}
+          {action}
+        </Button>
       </form>
     </>
   );

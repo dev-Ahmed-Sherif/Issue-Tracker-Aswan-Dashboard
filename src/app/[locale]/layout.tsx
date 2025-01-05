@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getLocale } from "next-intl/server";
 
@@ -10,13 +11,14 @@ import Navbar from "@/components/layout/navbar";
 
 import ThemeProvider from "@/providers/theme-provider";
 import { ToastProvider } from "@/providers/toast-provider";
+import { Logout } from "@/actions/auth";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Issue Tracker Aswan Dashboard",
   description:
-    "Dashboard to control IT Networks Issues and Solve It in Best Solutions",
+    "Dashboard to control IT Networks Issues, solve it in Best Solutions",
 };
 
 export default async function RootLayout({
@@ -32,13 +34,31 @@ export default async function RootLayout({
     `${process.env.ACCESS_TOKEN_COOKIE}`
   )?.name;
   // console.log("layout: ", access);
+
+  const onLogout = async () => {
+    "use server";
+    await Logout()
+      .then((data) => {
+        console.log("data", data);
+        if (locale === "ar") {
+          redirect("/ar");
+        } else {
+          redirect("/en");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
       <body className={`${inter.className} overflow-x-hidden`}>
         <ThemeProvider attribute="class" enableSystem>
-          <Navbar cookie={refresh as string} />
+          <Navbar cookie={refresh as string} logout={onLogout} />
           <NextIntlClientProvider messages={messages}>
-            {children}
+            <main className="flex min-h-screen w-full flex-col">
+              {children}
+            </main>
           </NextIntlClientProvider>
           <ToastProvider />
         </ThemeProvider>

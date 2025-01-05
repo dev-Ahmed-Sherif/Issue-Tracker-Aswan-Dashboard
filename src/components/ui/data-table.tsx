@@ -50,10 +50,10 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div>
+    <div className="p-4">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Search"
+          placeholder="بحث"
           value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn(searchKey)?.setFilterValue(event.target.value)
@@ -104,29 +104,30 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  لا توجد بيانات.
+                  {/* No results. */}
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-center justify-end gap-4 space-x-2 py-4">
         <Button
           variant="outline"
-          size="sm"
+          // size="sm"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          Previous
+          السابق
         </Button>
         <Button
           variant="outline"
-          size="sm"
+          // size="sm"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          Next
+          التالى
         </Button>
       </div>
     </div>

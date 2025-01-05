@@ -4,7 +4,11 @@ import * as z from "zod";
 import axios from "axios";
 import { cookies } from "next/headers";
 
-const addComputerIssue = async () => {};
+const addComputerIssue = async (data: any) => {
+  // console.log(data);
+  const typeId = data.typeId !== "" ? data.typeId : `${process.env.TYPE_ID}`;
+  console.log(typeId);
+};
 
 const getComputerIssues = async () => {
   const backEndCookies = await cookies();
@@ -22,7 +26,7 @@ const getComputerIssues = async () => {
       },
     }
   );
-  console.log(res.data);
+  // console.log("getComputerIssues:", res?.data);
   return res.data;
 };
 
@@ -46,7 +50,7 @@ const getComputerIssuesId = async (id: string) => {
     );
   }
 
-  console.log(res?.data);
+  // console.log("getComputerIssue:", res?.data);
   return res?.data;
 };
 

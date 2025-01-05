@@ -29,7 +29,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { Login } from "@/actions/login";
+import { Login } from "@/actions/auth";
 
 const loginSchema = z.object({
   name: z.string().min(1, { message: "Please Enter Your Name Or Number" }),
@@ -69,16 +69,20 @@ export function LoginForm() {
           if (err.message.includes("401") || err.message.includes("404")) {
             toast({
               variant: "destructive",
-              title: "Something went wrong!",
-              description: "Name or Phone Number Or Password is incorrect",
-              action: <ToastAction altText="Try again">Try again</ToastAction>,
+              title: "حدث خطأ !",
+              description: "الأسم أو رقم الهاتف أو الباسورد غير صحيح",
+              action: (
+                <ToastAction altText="Try again">حاول مره اخرى</ToastAction>
+              ),
             });
           } else {
             toast({
               variant: "destructive",
-              title: "Uh oh! Something went wrong.",
-              description: "There was a problem with your request.",
-              action: <ToastAction altText="Try again">Try again</ToastAction>,
+              title: "حدث خطأ !",
+              description: "حدث خطأ مجهول",
+              action: (
+                <ToastAction altText="Try again">حاول مره اخرى</ToastAction>
+              ),
             });
           }
         });

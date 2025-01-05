@@ -87,9 +87,11 @@ export const computerIssueSchema = z.object({
     message: "Description is required",
   }),
   solutions: z
-    .array(z.string().min(1, "Solution cannot be empty"))
-    .min(1, { message: "Solutions are required" }),
-  typeId: z.string().min(1, {
-    message: "Type Id is required",
-  }),
+    .array(
+      z.string().min(1, {
+        message: "Solution cannot be empty",
+      })
+    )
+    .min(1, { message: "One Solution at least must" }),
+  typeId: z.string().optional(),
 });

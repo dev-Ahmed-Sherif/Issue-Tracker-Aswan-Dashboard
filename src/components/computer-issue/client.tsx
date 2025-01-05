@@ -21,8 +21,11 @@ const Client = ({ data }: ClientProps) => {
 
   return (
     <>
-      <div className="flex items-center justify-between">
-        <Heading title={`Computer Issues (${data.length})`} description="" />
+      <div className="flex items-center justify-between p-6">
+        <Heading
+          title={`المشاكل الفنية (${data})`}
+          description="قم بأدارة المشاكل الفنية وحلولها"
+        />
         <Button
           onClick={() => {
             router.push(`/computerIssues/new`);
