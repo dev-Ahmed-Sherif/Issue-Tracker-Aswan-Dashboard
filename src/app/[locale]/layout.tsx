@@ -40,14 +40,16 @@ export default async function RootLayout({
     await Logout()
       .then((data) => {
         console.log("data", data);
-        if (locale === "ar") {
-          redirect("/ar");
-        } else {
-          redirect("/en");
-        }
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        if (locale === "ar") {
+          redirect(`/ar`);
+        } else {
+          redirect("/en");
+        }
       });
   };
   return (
