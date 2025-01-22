@@ -12,11 +12,11 @@ const ComputerIssuePage = async ({ params }: ComputerIssueProps) => {
   const computerIssue = await getComputerIssuesId(params.computerIssueId);
 
   return (
-    <div className="flex-col">
+    <main className="flex min-h-screen w-full flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
         <ComputerIssueForm initialData={computerIssue} />
       </div>
-    </div>
+    </main>
   );
 };
 

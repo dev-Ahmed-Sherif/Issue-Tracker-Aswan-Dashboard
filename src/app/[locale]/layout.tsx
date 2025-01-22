@@ -56,9 +56,7 @@ export default async function RootLayout({
         <ThemeProvider attribute="class" enableSystem>
           <Navbar cookie={refresh as string} logout={onLogout} />
           <NextIntlClientProvider messages={messages}>
-            <main className="flex min-h-screen w-full flex-col">
-              {children}
-            </main>
+            {children}
           </NextIntlClientProvider>
           <ToastProvider />
         </ThemeProvider>

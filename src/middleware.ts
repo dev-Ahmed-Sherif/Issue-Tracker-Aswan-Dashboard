@@ -33,7 +33,11 @@ export function middleware(req: NextRequest) {
     !publicPages.includes(nextUrl.pathname)
   ) {
     // console.log("in", publicPages.includes(nextUrl.pathname));
-    return Response.redirect(`${process.env.DOMAIN_LOCAL}/${locale?.value}`);
+    return Response.redirect(
+      locale
+        ? `${process.env.DOMAIN}/${locale?.value}`
+        : `${process.env.DOMAIN}/ar`
+    );
   }
 
   return intlMiddleware(req);

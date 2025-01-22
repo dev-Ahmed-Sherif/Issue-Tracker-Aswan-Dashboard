@@ -11,8 +11,8 @@ export default async function Home() {
   }
 
   return (
-    <div className="flex w-full items-center justify-center px-4">
+    <main className="flex min-h-screen w-full flex-col">
       <LoginForm />
-    </div>
+    </main>
   );
 }
