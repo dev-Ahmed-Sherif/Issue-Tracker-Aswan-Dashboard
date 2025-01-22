@@ -29,11 +29,10 @@ export default async function RootLayout({
   const backEndCookies = await cookies();
   const messages = await getMessages();
   const locale = await getLocale();
-  // const access = backEndCookies.get(`${process.env.ACCESS_TOKEN_COOKIE}`);
+
   const refresh = backEndCookies.get(
-    `${process.env.ACCESS_TOKEN_COOKIE}`
+    `${process.env.REFRESH_TOKEN_COOKIE}`
   )?.name;
-  // console.log("layout: ", access);
 
   const onLogout = async () => {
     "use server";
@@ -46,7 +45,7 @@ export default async function RootLayout({
       })
       .finally(() => {
         if (locale === "ar") {
-          redirect(`/ar`);
+          redirect("/ar");
         } else {
           redirect("/en");
         }

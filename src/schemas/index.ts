@@ -19,8 +19,10 @@ export const RegisterSchema = z.object({
 });
 
 export const LoginSchema = z.object({
-  name: z.string().min(1, { message: "Please Enter Your Name Or Number" }),
-  password: z.string().min(1, { message: "Please Enter Your Password" }),
+  // name: z.string().min(1, { message: "Please Enter Your Name Or Number" }),
+  name: z.string().min(1, { message: "يجب إضافة الأسم أو رقم الهاتف" }),
+  // password: z.string().min(1, { message: "Please Enter Your Password" }),
+  password: z.string().min(1, { message: "يجب إدخال الباسورد" }),
 });
 
 export const ResetSchema = z.object({
@@ -84,14 +86,22 @@ export const SettingsSchema = z
 
 export const computerIssueSchema = z.object({
   description: z.string().min(1, {
-    message: "Description is required",
+    // message: "Description is required",
+    message: "وصف المشكلة مطلوب",
   }),
   solutions: z
     .array(
       z.string().min(1, {
-        message: "Solution cannot be empty",
+        message: "يجب إضافة حل للمشكلة ولا يمكن أن يكون فارغ",
       })
     )
-    .min(1, { message: "One Solution at least must" }),
+    .min(1, { message: "يجب إضافة حل واحد على الأقل" }),
+  // solutions: z
+  //   .array(
+  //     z.string().min(1, {
+  //       message: "Solution cannot be empty",
+  //     })
+  //   )
+  //   .min(1, { message: "One Solution at least must" }),
   typeId: z.string().optional(),
 });

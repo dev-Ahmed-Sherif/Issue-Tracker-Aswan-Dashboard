@@ -1,4 +1,4 @@
-import { getComputerIssuesId } from "@/actions/computerIssueService";
+import { getComputerIssuesId } from "@/actions/computerIssue/computerIssueService";
 
 import ComputerIssueForm from "@/components/computer-issue/computer-issue-form";
 

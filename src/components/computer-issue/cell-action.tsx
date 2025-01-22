@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
 
-import { SizeColumn } from "@/components/computer-issue/columns";
+import { ComputerIssueColumn } from "@/components/computer-issue/columns";
 
 import {
   DropdownMenu,
@@ -21,7 +21,7 @@ import AlertModal from "@/components/modals/alert-modal";
 import useToggleState from "@/hooks/use-toggle-state";
 
 type CellActionProps = {
-  data: SizeColumn;
+  data: ComputerIssueColumn;
 };
 
 const CellAction = ({ data }: CellActionProps) => {
@@ -60,12 +60,18 @@ const CellAction = ({ data }: CellActionProps) => {
     }
   };
 
+  const togg = () => {
+    router.refresh();
+    window.location.reload();
+    toggleOpen();
+  };
+
   return (
     <>
       <AlertModal
         isOpen={open}
         loading={loading}
-        onClose={() => toggleOpen()}
+        onClose={() => togg()}
         onConfirm={onDelete}
       />
       <DropdownMenu>

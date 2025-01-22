@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import {
   getComputerIssues,
   getComputerIssuesId,
-} from "@/actions/computerIssueService";
+} from "@/actions/computerIssue/computerIssueService";
 
 const Client = () => {
   const getData = () => {

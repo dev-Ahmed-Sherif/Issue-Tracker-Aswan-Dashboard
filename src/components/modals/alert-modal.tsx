@@ -21,12 +21,12 @@ const AlertModal = ({
   onClose,
   onConfirm,
 }: AlertModalProps) => {
-  const [isMounted, toggleMounted] = useToggleState();
+  const [isMounted, toggleIsMounted] = useToggleState();
 
-  // console.log(isMounted)
+  // console.log(isMounted);
 
   useEffect(() => {
-    toggleMounted();
+    toggleIsMounted();
   }, []);
 
   if (isMounted) {

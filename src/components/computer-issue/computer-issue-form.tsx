@@ -29,13 +29,13 @@ import { useToast } from "@/hooks/use-toast";
 import useToggleState from "@/hooks/use-toggle-state";
 
 import { computerIssueSchema } from "@/schemas";
-import { addComputerIssue } from "@/actions/computerIssueService";
+
+import { addComputerIssue } from "@/actions/computerIssue/computerIssueService";
 
 type ComputerIssueFormProps = {
   initialData: any | null;
 };
 
-// TODO: Set Schema and Form Types in Schemas Folder
 type ComputerIssueFormValues = z.infer<typeof computerIssueSchema>;
 
 const ComputerIssueForm = ({ initialData }: ComputerIssueFormProps) => {
@@ -53,7 +53,7 @@ const ComputerIssueForm = ({ initialData }: ComputerIssueFormProps) => {
 
   const title = initialData ? "تعديل مشكلة" : "إضافة مشكلة";
   const description = initialData ? "تعديل" : "إضافة مشكلة جديدة";
-  const toastMessage = initialData ? "تعديل" : "إضافة";
+  const toastMessage = initialData ? "تعديل" : " تم الأضافة بنجاح";
   const action = initialData ? "تعديل" : "إضافة";
 
   // const schema = z.object({
@@ -103,13 +103,22 @@ const ComputerIssueForm = ({ initialData }: ComputerIssueFormProps) => {
 
   const onSubmit = async (data: ComputerIssueFormValues) => {
     console.log(data);
-    addComputerIssue(data)
+    await addComputerIssue(data)
       .then(() => {
         toast({
-          description: `��� ${toastMessage}`,
+          description: `${toastMessage}`,
         });
+        router.refresh();
+        setTimeout(() => {
+          router.push(`/computerIssues`);
+        }, 70);
       })
-      .catch(() => {});
+      .catch(() => {
+        toast({
+          variant: "destructive",
+          description: "حصل خطأ ما",
+        });
+      });
     // try {
     //   toggleLoading();
     //   if (initialData) {

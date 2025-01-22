@@ -8,14 +8,15 @@ import { DataTable } from "@/components/ui/data-table";
 import { Separator } from "@/components/ui/separator";
 import Heading from "@/components/ui/heading";
 
-import { SizeColumn, columns } from "@/components/computer-issue/columns";
+import { columns } from "@/components/computer-issue/columns";
 
 type ClientProps = {
-  // data: SizeColumn[];
+  // data: ComputerIssueColumn[];
   data: any[];
 };
 
 const Client = ({ data }: ClientProps) => {
+  // console.log("client", data);
   const router = useRouter();
   const params = useParams();
 
@@ -23,7 +24,7 @@ const Client = ({ data }: ClientProps) => {
     <>
       <div className="flex items-center justify-between p-6">
         <Heading
-          title={`المشاكل الفنية (${data})`}
+          title={`المشاكل الفنية (${data.length})`}
           description="قم بأدارة المشاكل الفنية وحلولها"
         />
         <Button
@@ -36,7 +37,7 @@ const Client = ({ data }: ClientProps) => {
         </Button>
       </div>
       <Separator />
-      <DataTable searchKey="name" columns={columns} data={data} />
+      <DataTable searchKey="description" columns={columns} data={data} />
     </>
   );
 };
